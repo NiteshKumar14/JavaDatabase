@@ -5,6 +5,7 @@
  */
 package databaseconn;
 
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,12 +14,14 @@ import javax.swing.JOptionPane;
  */
 public class DBI extends javax.swing.JFrame {
 javax.swing.JFrame previous;
+Statement stmt;
     /**
      * Creates new form DBI
      */
-    public DBI(javax.swing.JFrame temp) {
+    public DBI(javax.swing.JFrame temp,Statement stmt) {
         initComponents();
         previous=temp;
+        this.stmt=stmt;
     }
 
     /**

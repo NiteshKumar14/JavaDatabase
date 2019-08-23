@@ -22,20 +22,19 @@ public class DataBaseConn {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws ClassNotFoundException, SQLException, IllegalAccessException {
+   public static Statement getStatement() throws ClassNotFoundException{
 
         Class.forName("com.mysql.jdbc.Driver");
 
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/nit777", "root", ""); Statement stmt = con.createStatement(); ResultSet rset = stmt.executeQuery("select *from student")) {
-            while (rset.next()) {
-                System.out.print(rset.getInt(4) + "\t");
-                System.out.print(rset.getString("NAME") + "\t");
-                System.out.println(rset.getString("address"));
-
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/nit777", "root", ""); Statement stmt = con.createStatement(); ) {
+            return stmt;
             }
-        } catch (Exception e) {
+        
+    catch (Exception e) {
             e.printStackTrace();
         }
-    }
+       return null;
+    
 
+}
 }

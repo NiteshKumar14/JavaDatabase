@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -21,12 +22,12 @@ import java.util.logging.Logger;
  */
 public class UserLogin extends javax.swing.JFrame {
  Connection con;
-    /**
-     * Creates new form UserLogin
-     */
-    public UserLogin() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-        Driver driver=(Driver)Class.forName("com.mysql.jdbc.Driver").newInstance();
-        
+ Statement stmt;
+    
+  
+    public UserLogin() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException  {
+      Driver driver =(Driver)Class.forName("com.mysql.jdbc.Driver").newInstance();
+      con=DriverManager.getConnection("jdbc:mysql://localhost:3306/nit777","root","");
         initComponents();
     }
 
@@ -97,21 +98,44 @@ public class UserLogin extends javax.swing.JFrame {
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
       String user=username.getText();
       String pwd=password.getText();
-     try {
-         con = DriverManager.getConnection("jdbc:mysql://localhost:3306/nit777","root","");
-         String query="select username ,password from accountholder where password ="+pwd+"and username ="+username;
-         Statement stmt;
-          stmt = con.createStatement();
-         
-         ResultSet set;
-          set = stmt.executeQuery(query);
-          if(set.first()==)
-         
-         
-         
-     } catch (SQLException ex) {
-         Logger.getLogger(UserLogin.class.getName()).log(Level.SEVERE, null, ex);
-     }
+      String u,p;
+      boolean attempt=true;
+     
+      
+          
+            try {
+                
+                   
+                    String query="select username ,password from accountholder where password = '"+pwd+"' and username = '"+user+"'";
+                  
+                     stmt = con.createStatement();
+
+                    ResultSet set;
+                     set = stmt.executeQuery(query);
+                    
+                    
+                    if(set.next())
+                    {   JOptionPane.showMessageDialog(this,"Login SucessFully");
+                        DBI d=new DBI(this,stmt);
+                        d.setVisible(true);
+                        this.setVisible(false);
+                       
+
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(this,"incorrect username or password");
+                        
+                    }
+                       
+
+
+
+                } 
+                    catch (SQLException ex) {
+                        
+                       
+                    }
        
        
       
@@ -119,7 +143,7 @@ public class UserLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_loginActionPerformed
 
     private void createAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountActionPerformed
-        AccountCreation ac=new AccountCreation(this);
+        AccountCreation ac=new AccountCreation(this,stmt);
 
         ac.setVisible(true);
         setVisible(false);

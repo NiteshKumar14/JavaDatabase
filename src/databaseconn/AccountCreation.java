@@ -5,18 +5,22 @@
  */
 package databaseconn;
 
+import java.sql.Statement;
+
 /**
  *
  * @author c3
  */
 public class AccountCreation extends javax.swing.JFrame {
 javax.swing.JFrame previous;
+Statement stmt;
     /**
      * Creates new form AccountCreation
      */
-    public AccountCreation(javax.swing.JFrame temp) {
+    public AccountCreation(javax.swing.JFrame temp,Statement stmt) {
         initComponents();
         previous=temp;
+        this.stmt=stmt;
     }
 
     /**
@@ -80,7 +84,7 @@ javax.swing.JFrame previous;
 
         String n = name.getText();
         Bank.addAccount(n);
-        DBI object = new DBI(this);
+        DBI object = new DBI(this,stmt);
         object.setVisible(true);
         setVisible(false);
         
