@@ -44,14 +44,14 @@ public class BANKING_SYSTEM extends javax.swing.JFrame {
         details = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         depositFund = new javax.swing.JButton();
-        amount = new javax.swing.JTextField();
+        accNumber = new javax.swing.JTextField();
         withdraw = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        accNumber = new javax.swing.JLabel();
         balance = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         LABE1 = new javax.swing.JLabel();
+        amount = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -103,7 +103,7 @@ public class BANKING_SYSTEM extends javax.swing.JFrame {
             }
         });
         getContentPane().add(depositFund, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 290, 210, 30));
-        getContentPane().add(amount, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 280, 290, 40));
+        getContentPane().add(accNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 150, 290, 40));
 
         withdraw.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
         withdraw.setText("Withdraw ");
@@ -142,9 +142,6 @@ public class BANKING_SYSTEM extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 180, -1, -1));
 
-        accNumber.setFont(new java.awt.Font("Tahoma", 2, 18)); // NOI18N
-        getContentPane().add(accNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, 270, 50));
-
         balance.setFont(balance.getFont().deriveFont((balance.getFont().getStyle() | java.awt.Font.ITALIC), 18));
         balance.setText("Account Number :");
         getContentPane().add(balance, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 510, 210, 40));
@@ -156,6 +153,7 @@ public class BANKING_SYSTEM extends javax.swing.JFrame {
         LABE1.setFont(LABE1.getFont().deriveFont((LABE1.getFont().getStyle() | java.awt.Font.ITALIC), 18));
         LABE1.setText("Name  :  ");
         getContentPane().add(LABE1, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 30, 80, 30));
+        getContentPane().add(amount, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 280, 290, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -177,20 +175,20 @@ public class BANKING_SYSTEM extends javax.swing.JFrame {
 
     private void depositFundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depositFundActionPerformed
         try {
-            if (amount.getText().isEmpty()) {
+            if (accNumber.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "amount cannot be empty  ");
                 return;
             }
-            if (Double.parseDouble(amount.getText()) < 0) {
+            if (Double.parseDouble(accNumber.getText()) < 0) {
                 JOptionPane.showMessageDialog(this, "invalid amount ");
-                amount.setText("");
+                accNumber.setText("");
             }
-            bal += Double.parseDouble(amount.getText());
+            bal += Double.parseDouble(accNumber.getText());
             balance.setText("" + bal);
             JOptionPane.showMessageDialog(this, "funds deposited successfully  ");
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.addRow(new Object[]{serno++, "deposit ", Double.parseDouble(amount.getText()), Double.parseDouble(balance.getText())});
-            amount.setText(" ");
+            model.addRow(new Object[]{serno++, "deposit ", Double.parseDouble(accNumber.getText()), Double.parseDouble(balance.getText())});
+            accNumber.setText(" ");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "amount cannot be empty  execption is ");
 
@@ -199,19 +197,19 @@ public class BANKING_SYSTEM extends javax.swing.JFrame {
 
     private void withdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawActionPerformed
         try {
-            if (amount.getText().isEmpty()) {
+            if (accNumber.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "amount cannot be empty  ");
                 return;
             }
-            if (Double.parseDouble(amount.getText()) > bal) {
+            if (Double.parseDouble(accNumber.getText()) > bal) {
                 JOptionPane.showMessageDialog(this, "Not enough balance try again ");
-                amount.setText("");
+                accNumber.setText("");
             }
-            bal -= Double.parseDouble(amount.getText());
+            bal -= Double.parseDouble(accNumber.getText());
             balance.setText("" + bal);
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.addRow(new Object[]{serno++, "withdraw ", Double.parseDouble(amount.getText()), Double.parseDouble(balance.getText())});
-            amount.setText(" ");
+            model.addRow(new Object[]{serno++, "withdraw ", Double.parseDouble(accNumber.getText()), Double.parseDouble(balance.getText())});
+            accNumber.setText(" ");
         } catch (Exception e) {
         }
     }//GEN-LAST:event_withdrawActionPerformed
@@ -263,7 +261,7 @@ public class BANKING_SYSTEM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LABE1;
-    private javax.swing.JLabel accNumber;
+    private javax.swing.JTextField accNumber;
     private javax.swing.JTextField amount;
     private javax.swing.JLabel balance;
     private javax.swing.JButton depositFund;

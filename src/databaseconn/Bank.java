@@ -5,8 +5,13 @@
  */
 package databaseconn;
 
+import com.mysql.jdbc.Driver;
 import static java.lang.Double.MAX_VALUE;
 import static java.lang.Double.MIN_VALUE;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -25,6 +30,36 @@ public class Bank {
         acc.add(new BankAccount(n, 0, name));
         ncc++;
 
+    }
+
+    public Bank() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        
+        Driver driver=(Driver)Class.forName("com.mysql.jdbc.Driver").newInstance();
+        DriverManager.registerDriver(driver);
+        Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/nit777","root","");
+        Statement stmt = con.createStatement();
+        stmt.executeQuery("select *from account holder");
+       
+       
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
     public static double getTotalBalance() {
@@ -95,5 +130,6 @@ public class Bank {
         return null;
 
     }
+     
 
 }
