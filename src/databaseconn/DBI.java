@@ -5,8 +5,12 @@
  */
 package databaseconn;
 
+import java.awt.HeadlessException;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,10 +19,10 @@ import javax.swing.JOptionPane;
 public class DBI extends javax.swing.JFrame {
 javax.swing.JFrame previous;
 Statement stmt;
+ ArrayList <BankAccount> tem;
     /**
      * Creates new form DBI
      * @param temp
-     * @param stmt
      */
     public DBI(javax.swing.JFrame temp,Statement stmt) {
         initComponents();
@@ -113,7 +117,6 @@ Statement stmt;
         getContentPane().add(withdraw, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 370, 210, 30));
 
         balance.setFont(balance.getFont().deriveFont((balance.getFont().getStyle() | java.awt.Font.ITALIC), 18));
-        balance.setText("Account Number :");
         getContentPane().add(balance, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 510, 210, 40));
 
         jLabel6.setFont(jLabel6.getFont().deriveFont((jLabel6.getFont().getStyle() | java.awt.Font.ITALIC), 18));
@@ -140,11 +143,32 @@ Statement stmt;
     }//GEN-LAST:event_logOutActionPerformed
 
     private void detailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailsActionPerformed
-        BankAccount t = Bank.getAccountByName((accNumber.getText()));
-
-        accNumber.setText("" + t.accountNumber);
-        balance.setText("" + t.balance);
-        LABE1.setText(t.name);
+        boolean attempt=true;
+        String tempAc=accNumber.getText();
+        while(attempt)
+        {
+            if(tempAc.equals(""))
+            {
+                JOptionPane.showMessageDialog(this,"account number cannot be empty");
+                
+            }
+            else
+            {
+                break;
+            }
+            
+        }
+        int iterator=0;    
+        tem=Bank.acc;
+        while(true)
+        {
+            if(tem.get(iterator++).getAccountNumber()==Integer.parseInt(tempAc))
+                break;
+        }
+        balance.setText((tem.get(iterator).getBalance()+""));
+        LABE1.setText(tem.get(iterator).getName()+"");
+        accNumber.setText(tem.get(iterator).getAccountNumber()+"");
+        
     }//GEN-LAST:event_detailsActionPerformed
 
     private void depositFundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depositFundActionPerformed
@@ -157,15 +181,38 @@ Statement stmt;
                 JOptionPane.showMessageDialog(this, "invalid amount ");
                 amount.setText("");
             }
-            BankAccount t = Bank.getAccount(Integer.parseInt(accNumber.getText()));
-
-            t.balance += Double.parseDouble(amount.getText());
-            balance.setText("" + t.balance);
+            
+            double bal = 0;
+            tem=Bank.acc;
+            boolean found=false;
+            int iterator=0;
+            while(true)
+            {
+                if(tem.get(iterator++).getAccountNumber()==Integer.parseInt(accNumber.getText() ))
+                {
+                    found=true;
+                    break;
+                }
+                else{
+                    
+                    if(iterator==tem.size()-1)
+                        break;
+                }
+            }
+            if(found)
+            {
+                bal=tem.get(iterator).getBalance();
+            bal += Double.parseDouble(amount.getText());
+            balance.setText("" + bal);
+            stmt.executeQuery("Update bankaccount set balance='"+bal+"' where accountnumber='"+Integer.parseInt(accNumber.getText())+"'");
             JOptionPane.showMessageDialog(this, "funds deposited successfully  ");
-//            DefaultTableModel model=(DefaultTableModel)jTable1.getModel();
+            //DefaultTableModel model=(DefaultTableModel)jTable1.getModel();
 //            model.addRow(new Object []{serno++,"deposit ",Double.parseDouble(accNumber.getText()),Double.parseDouble(balance.getText())});
            amount.setText(" ");
-        } catch (Exception e) {
+                
+            }
+            
+        } catch (HeadlessException | NumberFormatException | SQLException e) {
             JOptionPane.showMessageDialog(this, "amount cannot be empty  execption is ");
 
         }
@@ -183,11 +230,28 @@ Statement stmt;
                 amount.setText("");
             }
 
-            t.balance -= Double.parseDouble(amount.getText());
-            balance.setText("" + t.balance);
+            double bal = 0;
+            tem=Bank.acc;
+            int iterator=0;
+            boolean found =false;
+            while(true)
+            {
+                if(tem.get(iterator++).getAccountNumber()==Integer.parseInt(accNumber.getText() ))
+                    break;
+                 if(iterator==tem.size()-1)
+                        break;
+            }
+            if(found)
+            {
+                bal=tem.get(iterator).getBalance();
+            bal-=Integer.parseInt(amount.getText());
+            stmt.executeQuery("Update bankaccount set balance='"+bal+"' where accountnumber='"+Integer.parseInt(accNumber.getText())+"'");
 //            DefaultTableModel model=(DefaultTableModel)jTable1.getModel();
 //            model.addRow(new Object []{serno++,"withdraw ",Double.parseDouble(accNumber.getText()),Double.parseDouble(balance.getText())});
             amount.setText(" ");
+                
+            }
+            
         } catch (Exception e) {
         }
     }//GEN-LAST:event_withdrawActionPerformed

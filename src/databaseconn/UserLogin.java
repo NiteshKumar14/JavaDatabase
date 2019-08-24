@@ -51,8 +51,6 @@ public class UserLogin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        password.setText("jPasswordField1");
         getContentPane().add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, 250, 40));
         getContentPane().add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 220, 250, 40));
 
@@ -101,7 +99,7 @@ public class UserLogin extends javax.swing.JFrame {
 
       boolean attempt=true;
      
-      
+      while(attempt){
           
             try {
                 
@@ -119,23 +117,25 @@ public class UserLogin extends javax.swing.JFrame {
                         DBI d=new DBI(this,stmt);
                         d.setVisible(true);
                         this.setVisible(false);
-                       
+                       attempt=false;
 
                     }
                     else
                     {
                         JOptionPane.showMessageDialog(this,"incorrect username or password");
+                        username.setText("");
+                        password.setText("");
                         
                     }
                        
+            }
 
-
-
-                } 
-                    catch (SQLException ex) {
+ catch (SQLException ex) {
                         
                        
                     }
+               } 
+                   
        
        
       

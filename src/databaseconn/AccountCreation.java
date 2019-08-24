@@ -5,6 +5,7 @@
  */
 package databaseconn;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -102,36 +103,81 @@ Statement stmt;
 
     private void createAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountActionPerformed
 
-        String uname = null;
-        String pass = null;
-        String n = null;
-        int  acc=0;
+    try {                                              
+        
+        String uname = "";
+        String pass = "";
+        String n ="";
+       
         boolean attempt =true; 
         while(attempt)
         {    n = name.getText();
+        
+        uname = userName.getText();
+        
+        pass = this.pwd.getText();
+        ResultSet set;
+        if(n.equals("")||uname.equals("")||pass.equals(""))
+        {
+            JOptionPane.showMessageDialog(this, "all fiedls  are mandatory");
+            name.setText("");
+            userName.setText("");
+            pwd.setText("");
+        }
+        
+        
+        
+        
+        
+        
+        else
+        {   boolean found=false;
+            int iterator=0;
+            while(true)
+            {
+                if( Bank.acc.get(iterator++).getUsername().equals(userName.getText()))
+                {
+                    found=true;
+                    break;
+                }
+                if(iterator==Bank.acc.size()-1)
+                    break;
+                
+            }
+            if(found)
+            {
+                JOptionPane.showMessageDialog(this, "username already exist try another one ");
+                
+            }
+            else
+            {
+                attempt=false;
+            }
             
-            uname = userName.getText();
-          
-            pass = this.pwd.getText();
-             if(n.equals("")||uname.equals("")||pass.equals(""))
-             {
-                 JOptionPane.showMessageDialog(this, "all fiedls  are mandatory");
-                 name.setText("");
-                 userName.setText("");
-                 pwd.setText("");
-             }
-             else
-                 attempt=false;
-         }
-    try {
-        acc=Bank.addAccount(uname,pass,n);
-        JOptionPane.showMessageDialog(this, "Account Created Successfully account number is :"+acc);
+        }
+        
+        
+        
+        
+        
+        
+        }
+        
+        try {
+            int acc=Bank.addAccount(n,uname,pass);
+            JOptionPane.showMessageDialog(this, "Account Created Successfully account number is :"+acc);
+            Bank.fetchDetails();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+            Logger.getLogger(AccountCreation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        UserLogin object = new UserLogin();
+        object.setVisible(true);
+        setVisible(false);
+        
+        
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
         Logger.getLogger(AccountCreation.class.getName()).log(Level.SEVERE, null, ex);
     }
-        DBI object = new DBI(this,stmt);
-        object.setVisible(true);
-        setVisible(false);
         
         
     }//GEN-LAST:event_createAccountActionPerformed

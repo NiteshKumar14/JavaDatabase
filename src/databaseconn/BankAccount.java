@@ -59,6 +59,10 @@ public class BankAccount {
         name = n;
     }
 
+    public String getName() {
+        return name;
+    }
+
     double deposit(double x) {
         this.balance += x;
         return this.balance;

@@ -33,14 +33,13 @@ public class Bank {
         if(n<0)
             n=n*(-1);
         PreparedStatement stmt = getDbC().prepareStatement("INSERT INTO `bankaccount` (`username`, `password`, `name`, `balance`, `accountNumber`) VALUES (?,?,?,?,?)");
-        stmt.setString(1, username);
-        stmt.setString(2, password);
-        stmt.setString(3, name);
-        stmt.setDouble(4, 0.0);
+        stmt.setString(1,username);
+        stmt.setString(2,password);
+        stmt.setString(3,name);
+        stmt.setDouble(4,0.0);
         stmt.setInt(5, n);
-        int i=stmt.executeUpdate();
-        System.out.println("i="+i);
-        
+        stmt.executeUpdate();
+   
        
         return n;
        
@@ -56,7 +55,7 @@ public class Bank {
         double tb = 0;
 
         for (int i = 0; i < ncc; i++) {
-            tb = acc.get(0).getBalance();
+            tb += acc.get(i).getBalance();
 
         }
         return tb;
@@ -120,7 +119,7 @@ public class Bank {
         return null;
 
     }
-    private static void fetchDetails() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException
+    public static void fetchDetails() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException
     {
        Connection con=getDbC();
        Statement stmt=con.createStatement();

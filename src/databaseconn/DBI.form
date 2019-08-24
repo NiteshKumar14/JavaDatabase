@@ -155,7 +155,6 @@
             <Font component="balance" italic="true" property="font" relativeSize="false" size="18"/>
           </FontInfo>
         </Property>
-        <Property name="text" type="java.lang.String" value="Account Number :"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
