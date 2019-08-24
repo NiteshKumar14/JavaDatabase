@@ -98,7 +98,7 @@ public class UserLogin extends javax.swing.JFrame {
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
       String user=username.getText();
       String pwd=password.getText();
-      String u,p;
+
       boolean attempt=true;
      
       
@@ -106,7 +106,7 @@ public class UserLogin extends javax.swing.JFrame {
             try {
                 
                    
-                    String query="select username ,password from accountholder where password = '"+pwd+"' and username = '"+user+"'";
+                    String query="select username ,password from bankaccount where password = '"+pwd+"' and username = '"+user+"'";
                   
                      stmt = con.createStatement();
 

@@ -10,6 +10,8 @@ import static java.lang.Double.MAX_VALUE;
 import static java.lang.Double.MIN_VALUE;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -23,43 +25,31 @@ public class Bank {
 
     public static ArrayList<BankAccount> acc = new ArrayList();
     public static int ncc;
+   
 
-    public static void addAccount(String name) {
+    public static int addAccount(String name,String username,String password) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         Random random = new Random();
         int n = random.nextInt();
-        acc.add(new BankAccount(n, 0, name));
-        ncc++;
+        if(n<0)
+            n=n*(-1);
+        PreparedStatement stmt = getDbC().prepareStatement("INSERT INTO `bankaccount` (`username`, `password`, `name`, `balance`, `accountNumber`) VALUES (?,?,?,?,?)");
+        stmt.setString(1, username);
+        stmt.setString(2, password);
+        stmt.setString(3, name);
+        stmt.setDouble(4, 0.0);
+        stmt.setInt(5, n);
+        int i=stmt.executeUpdate();
+        System.out.println("i="+i);
+        
+       
+        return n;
+       
 
     }
 
     public Bank() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
-        
-        Driver driver=(Driver)Class.forName("com.mysql.jdbc.Driver").newInstance();
-        DriverManager.registerDriver(driver);
-        Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/nit777","root","");
-        Statement stmt = con.createStatement();
-        stmt.executeQuery("select *from account holder");
-       
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+         getDbC();
+         fetchDetails();
     }
 
     public static double getTotalBalance() {
@@ -129,6 +119,30 @@ public class Bank {
         }
         return null;
 
+    }
+    private static void fetchDetails() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException
+    {
+       Connection con=getDbC();
+       Statement stmt=con.createStatement();
+        ResultSet set=stmt.executeQuery("select *from bankaccount");
+        
+        while(set.next())
+        {
+            acc.add(new BankAccount(set.getInt("accountnumber"),set.getDouble("balance"),set.getString("name"),set.getString("username"),set.getString("password")));
+            
+        }
+        
+        
+       
+        
+    }
+    public static Connection getDbC() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException
+    {
+            Driver driver=(Driver)Class.forName("com.mysql.jdbc.Driver").newInstance();
+        DriverManager.registerDriver(driver);
+        Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/nit777","root","");
+      
+        return con;
     }
      
 

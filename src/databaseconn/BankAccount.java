@@ -15,7 +15,7 @@ public class BankAccount {
         this.accountNumber = accountNumber;
     }
 
-    public void setBalance(float balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
@@ -24,7 +24,15 @@ public class BankAccount {
     }
 
     int accountNumber;
-    float balance;
+
+    public BankAccount(int accountNumber, double balance, String name, String username, String password) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+    }
+    double balance;
     String name;
     String username;
     String password;
@@ -45,18 +53,18 @@ public class BankAccount {
         this.password = password;
     }
 
-    public BankAccount(int accountNumber, float balance, String n) {
+    public BankAccount(int accountNumber, double balance, String n) {
         this.accountNumber = accountNumber;
         this.balance = balance;
         name = n;
     }
 
-    float deposit(float x) {
+    double deposit(double x) {
         this.balance += x;
         return this.balance;
     }
 
-    float withdraw(float x) {
+   double withdraw(double x) {
         if (balance < x) {
             System.out.println("not enough balance");
             return 0;
@@ -71,7 +79,7 @@ public class BankAccount {
     }
 
     void taxDeduction() {
-        balance = (float) (balance - (0.3) * balance);
+        balance = (balance - (0.3) * balance);
 
     }
 

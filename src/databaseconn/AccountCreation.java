@@ -5,7 +5,11 @@
  */
 package databaseconn;
 
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,6 +20,8 @@ javax.swing.JFrame previous;
 Statement stmt;
     /**
      * Creates new form AccountCreation
+     * @param temp
+     * @param stmt
      */
     public AccountCreation(javax.swing.JFrame temp,Statement stmt) {
         initComponents();
@@ -32,21 +38,25 @@ Statement stmt;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        LABE1 = new javax.swing.JLabel();
+        userNameLabel = new javax.swing.JLabel();
         LABE2 = new javax.swing.JLabel();
         LABE3 = new javax.swing.JLabel();
         createAccount = new javax.swing.JButton();
         close = new javax.swing.JButton();
         name = new javax.swing.JTextField();
         address = new javax.swing.JTextField();
+        pwd = new javax.swing.JTextField();
+        LABE4 = new javax.swing.JLabel();
+        LABE5 = new javax.swing.JLabel();
+        userName = new javax.swing.JTextField();
         phno = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        LABE1.setFont(LABE1.getFont().deriveFont((LABE1.getFont().getStyle() | java.awt.Font.ITALIC), 18));
-        LABE1.setText("PHONE NUMBER ");
-        getContentPane().add(LABE1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, 160, 30));
+        userNameLabel.setFont(userNameLabel.getFont().deriveFont((userNameLabel.getFont().getStyle() | java.awt.Font.ITALIC), 18));
+        userNameLabel.setText("USERNAME");
+        getContentPane().add(userNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 350, 160, 30));
 
         LABE2.setFont(LABE2.getFont().deriveFont((LABE2.getFont().getStyle() | java.awt.Font.ITALIC), 18));
         LABE2.setText("NAME");
@@ -73,17 +83,52 @@ Statement stmt;
             }
         });
         getContentPane().add(close, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 490, 210, 30));
-        getContentPane().add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 100, 290, 40));
-        getContentPane().add(address, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 180, 290, 40));
-        getContentPane().add(phno, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 270, 290, 40));
+        getContentPane().add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 100, 290, 40));
+        getContentPane().add(address, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, 290, 40));
+        getContentPane().add(pwd, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 410, 290, 40));
+
+        LABE4.setFont(LABE4.getFont().deriveFont((LABE4.getFont().getStyle() | java.awt.Font.ITALIC), 18));
+        LABE4.setText("PASSWORD");
+        getContentPane().add(LABE4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, 160, 30));
+
+        LABE5.setFont(LABE5.getFont().deriveFont((LABE5.getFont().getStyle() | java.awt.Font.ITALIC), 18));
+        LABE5.setText("PHONE NUMBER ");
+        getContentPane().add(LABE5, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, 160, 30));
+        getContentPane().add(userName, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 340, 290, 40));
+        getContentPane().add(phno, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 270, 290, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void createAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountActionPerformed
 
-        String n = name.getText();
-        Bank.addAccount(n);
+        String uname = null;
+        String pass = null;
+        String n = null;
+        int  acc=0;
+        boolean attempt =true; 
+        while(attempt)
+        {    n = name.getText();
+            
+            uname = userName.getText();
+          
+            pass = this.pwd.getText();
+             if(n.equals("")||uname.equals("")||pass.equals(""))
+             {
+                 JOptionPane.showMessageDialog(this, "all fiedls  are mandatory");
+                 name.setText("");
+                 userName.setText("");
+                 pwd.setText("");
+             }
+             else
+                 attempt=false;
+         }
+    try {
+        acc=Bank.addAccount(uname,pass,n);
+        JOptionPane.showMessageDialog(this, "Account Created Successfully account number is :"+acc);
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
+        Logger.getLogger(AccountCreation.class.getName()).log(Level.SEVERE, null, ex);
+    }
         DBI object = new DBI(this,stmt);
         object.setVisible(true);
         setVisible(false);
@@ -98,13 +143,17 @@ Statement stmt;
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LABE1;
     private javax.swing.JLabel LABE2;
     private javax.swing.JLabel LABE3;
+    private javax.swing.JLabel LABE4;
+    private javax.swing.JLabel LABE5;
     private javax.swing.JTextField address;
     private javax.swing.JButton close;
     private javax.swing.JButton createAccount;
     private javax.swing.JTextField name;
     private javax.swing.JTextField phno;
+    private javax.swing.JTextField pwd;
+    private javax.swing.JTextField userName;
+    private javax.swing.JLabel userNameLabel;
     // End of variables declaration//GEN-END:variables
 }

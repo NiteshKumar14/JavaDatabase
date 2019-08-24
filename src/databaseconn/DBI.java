@@ -17,6 +17,8 @@ javax.swing.JFrame previous;
 Statement stmt;
     /**
      * Creates new form DBI
+     * @param temp
+     * @param stmt
      */
     public DBI(javax.swing.JFrame temp,Statement stmt) {
         initComponents();
