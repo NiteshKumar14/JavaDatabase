@@ -40,7 +40,7 @@ public class Bank {
         stmt.setInt(5, n);
         stmt.executeUpdate();
    
-       
+       fetchDetails();
         return n;
        
 
@@ -127,11 +127,9 @@ public class Bank {
         
         while(set.next())
         {
-            acc.add(new BankAccount(set.getInt("accountnumber"),set.getDouble("balance"),set.getString("name"),set.getString("username"),set.getString("password")));
-            
-        }
-        
-        
+            BankAccount temp= new BankAccount(set.getInt("accountnumber"),set.getDouble("balance"),set.getString("name"), set.getString("username"), set.getString("password"));
+            acc.add(temp);
+        } 
        
         
     }
@@ -142,6 +140,15 @@ public class Bank {
         Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/nit777","root","");
       
         return con;
+    }
+    public static void  listDisplay()
+    {   
+        int size=acc.size();
+        while(size!=0)
+        {
+            System.out.println("elements in arraylist : "+acc.toString());
+            
+        }
     }
      
 

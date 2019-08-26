@@ -28,6 +28,7 @@ Statement stmt;
         initComponents();
         previous=temp;
         this.stmt=stmt;
+        
     }
 
     /**
@@ -53,6 +54,11 @@ Statement stmt;
         phno = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         userNameLabel.setFont(userNameLabel.getFont().deriveFont((userNameLabel.getFont().getStyle() | java.awt.Font.ITALIC), 18));
@@ -111,68 +117,85 @@ Statement stmt;
        
         boolean attempt =true; 
         while(attempt)
-        {    n = name.getText();
-        
-        uname = userName.getText();
-        
-        pass = this.pwd.getText();
-        ResultSet set;
-        if(n.equals("")||uname.equals("")||pass.equals(""))
-        {
-            JOptionPane.showMessageDialog(this, "all fiedls  are mandatory");
-            name.setText("");
-            userName.setText("");
-            pwd.setText("");
-        }
-        
-        
-        
-        
-        
-        
-        else
-        {   boolean found=false;
-            int iterator=0;
-            while(true)
+        {   
+            n = name.getText();
+
+            uname = userName.getText();
+
+            pass = this.pwd.getText();
+            ResultSet set;
+            if(n.equals("")||uname.equals("")||pass.equals(""))
             {
-                if( Bank.acc.get(iterator++).getUsername().equals(userName.getText()))
+                JOptionPane.showMessageDialog(this, "all fiedls  are mandatory");
+                name.setText("");
+                userName.setText("");
+                pwd.setText("");
+                return;
+            }
+            boolean found=false;
+                int iterator=0;
+                while(true)
                 {
-                    found=true;
-                    break;
+                    if( Bank.acc.get(iterator++).getUsername().equals(userName.getText()))
+                    {
+                        found=true;
+                        break;
+                    }
+                    if(iterator==Bank.acc.size()-1)
+                        break;
+
                 }
-                if(iterator==Bank.acc.size()-1)
-                    break;
-                
-            }
-            if(found)
+                if(found)
+                {
+                    JOptionPane.showMessageDialog(this, "username already exist try another one ");
+                    userName.setText("");
+                    return;
+                }
+
+
+            if(pass.length()<8)
             {
-                JOptionPane.showMessageDialog(this, "username already exist try another one ");
-                
+                JOptionPane.showMessageDialog(this, "pass must have 8 characters");
+
+                pwd.setText("");
+                return;
+
             }
-            else
+             if(address.getText().equals(""))
             {
-                attempt=false;
+                JOptionPane.showMessageDialog(this, "address must in fiiled");
+
+                    address.setText("");
+                    return;
             }
-            
-        }
+
+           if(phno.getText().length()<10)
+            {
+
+                try {
+                    Integer.parseInt(phno.getText());
+                    return;
+                } catch (NumberFormatException numberFormatException) 
+                {
+                    JOptionPane.showMessageDialog(this, "invalid phone number ");
+
+                    phno.setText("");
+                    return;
+                }
+            }
         
+                 else
+               break;
+            }
         
-        
-        
-        
-        
-        }
-        
-        try {
+       
             int acc=Bank.addAccount(n,uname,pass);
             JOptionPane.showMessageDialog(this, "Account Created Successfully account number is :"+acc);
             Bank.fetchDetails();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
-            Logger.getLogger(AccountCreation.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        UserLogin object = new UserLogin();
-        object.setVisible(true);
-        setVisible(false);
+      
+            UserLogin object = new UserLogin();
+            object.setVisible(true);
+            setVisible(false);
         
         
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException ex) {
@@ -185,6 +208,10 @@ Statement stmt;
     private void closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeActionPerformed
         System.exit(0);
     }//GEN-LAST:event_closeActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+previous.setVisible(true);     
+    }//GEN-LAST:event_formWindowClosing
 
     
 

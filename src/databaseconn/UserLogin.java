@@ -29,6 +29,7 @@ public class UserLogin extends javax.swing.JFrame {
       Driver driver =(Driver)Class.forName("com.mysql.jdbc.Driver").newInstance();
       con=DriverManager.getConnection("jdbc:mysql://localhost:3306/nit777","root","");
         initComponents();
+        Bank.fetchDetails();
     }
 
     /**
@@ -51,8 +52,8 @@ public class UserLogin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, 250, 40));
-        getContentPane().add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 220, 250, 40));
+        getContentPane().add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 330, 250, 40));
+        getContentPane().add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, 250, 40));
 
         jLabel1.setFont(new java.awt.Font("Segoe Script", 3, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 153, 0));
@@ -67,12 +68,12 @@ public class UserLogin extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe Script", 3, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 153, 204));
         jLabel3.setText("USERNAME");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 210, 220, 40));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 210, 220, 40));
 
         jLabel4.setFont(new java.awt.Font("Segoe Script", 3, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(51, 153, 0));
         jLabel4.setText("PASSWORD");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 200, 40));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, 200, 40));
 
         createAccount.setText("CREATE ACCOUNT ");
         createAccount.addActionListener(new java.awt.event.ActionListener() {
@@ -80,7 +81,7 @@ public class UserLogin extends javax.swing.JFrame {
                 createAccountActionPerformed(evt);
             }
         });
-        getContentPane().add(createAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 550, 290, 50));
+        getContentPane().add(createAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 560, 290, 50));
 
         login.setText("LOGIN ");
         login.addActionListener(new java.awt.event.ActionListener() {
@@ -88,7 +89,7 @@ public class UserLogin extends javax.swing.JFrame {
                 loginActionPerformed(evt);
             }
         });
-        getContentPane().add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 550, 170, 60));
+        getContentPane().add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 550, 170, 60));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -114,7 +115,13 @@ public class UserLogin extends javax.swing.JFrame {
                     
                     if(set.next())
                     {   JOptionPane.showMessageDialog(this,"Login SucessFully");
-                        DBI d=new DBI(this,stmt);
+                        
+                        DBI d = null;
+                        try {
+                            d = new DBI(this,stmt);
+                        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                            Logger.getLogger(UserLogin.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         d.setVisible(true);
                         this.setVisible(false);
                        attempt=false;
@@ -125,6 +132,7 @@ public class UserLogin extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this,"incorrect username or password");
                         username.setText("");
                         password.setText("");
+                        attempt=false;
                         
                     }
                        
